@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const events = [
   {
@@ -22,11 +22,25 @@ const events = [
 ];
 
 export default function App() {
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const tg = window.Telegram?.WebApp;
     tg?.ready();
     tg?.expand();
+
+    // Показать заставку 1.5 секунды
+    const timer = setTimeout(() => setLoading(false), 1500);
+    return () => clearTimeout(timer);
   }, []);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-blue-400">
+        <div className="text-white text-6xl font-extrabold tracking-wide">VM</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-900 p-4">
